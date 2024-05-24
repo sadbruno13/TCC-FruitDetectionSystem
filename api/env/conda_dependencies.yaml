@@ -1,0 +1,11 @@
+name: tccfruitdetection-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - ultralytics==8.2.20
+    - flask==3.0.3
+    
