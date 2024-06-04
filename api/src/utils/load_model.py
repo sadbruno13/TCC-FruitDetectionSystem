@@ -24,3 +24,15 @@ class YOLOModel:
         objects = names_dict[np.argmax(probs)] 
         print(objects)
         return str(objects)
+    
+    def detect_objects_from_form(self, image_file):
+
+        image = Image.open(image_file)
+
+        results = self.model(image)  # predict on an image
+
+        names_dict = results[0].names
+        probs = results[0].probs.data.numpy()
+        objects = names_dict[np.argmax(probs)] 
+        print(objects)
+        return str(objects)

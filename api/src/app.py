@@ -13,17 +13,31 @@ def get_status():
 @app.route('/score', methods=["POST"])
 def score():
 
-    data = request.json
-    imageb64 = data["imageb64"]
-    result = yolo_model.detect_objects(imageb64=imageb64)
+    if request.is_json:
+        data = request.json
+        imageb64 = data["imageb64"]
+        result = yolo_model.detect_objects(imageb64=imageb64)
 
-    return make_response(
-        jsonify(
-            {
-                "Resultado": result 
-            }
+        return make_response(
+            jsonify(
+                {
+                    "Resultado": result 
+                }
+            )
         )
-    )
+    elif request.content_type.startswith('multipart/form-data'):
+        image_file = request.files["image_file"]
+        result = yolo_model.detect_objects_from_form(image_file=image_file)
+        return make_response(
+            jsonify(
+                {
+                    "Resultado": result 
+                }
+            )
+        )
+    else:
+        return jsonify({"message": "Conteúdo desconhecido"}), 400
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
